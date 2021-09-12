@@ -1,5 +1,7 @@
 package br.inatel.cdg.algebra.scene;
 
+import br.inatel.cdg.algebra.scene.Ponto;
+import br.inatel.cdg.algebra.scene.Reta;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -10,37 +12,52 @@ import javafx.stage.Stage;
 
 public class ScenePrincipal {
 
-    private Button btnTeste, btnCalcCoefLinear; //Button representa botoes
-    private Label labelTeste1; //Label representam rótulos
-    private TextField textField1, textField2; //TextField Representam áreas de texto
+    private Button btnTeste; //Button representa botoes
+    private Label labelTeste1, labelP1X, labelP1Y, labelP2X, labelP2Y; //Label representam rótulos
+    private TextField  textOut1, textOut2, textIn1, textIn2, textIn3, textIn4; //TextField Representam áreas de texto
 
     public void criaScenePrincipal(Stage stage){
 
         //Criando os labels para os pontos e os campos de texto para os dados
-        labelTeste1 = new Label("Digite alguma coisa"); //rótulos
-        textField1 = new TextField(); //área de texto onde vc digitara alguma coisa
-
+        labelTeste1 = new Label("Entre com as coordenadas dos pontos:");
+        labelP1X = new Label("P1.x:");
+        textIn1 = new TextField();
+        labelP1Y = new Label("P1.y:");
+        textIn2 = new TextField();
+        labelP2X = new Label("P2.x:");
+        textIn3 = new TextField();
+        labelP2Y = new Label("P2.y:");
+        textIn4 = new TextField();
 
         //HBox é usado para agrupar elementos horizontalmente
-        HBox grupoHorizontal = new HBox(labelTeste1, textField1); //Passamos no construtor todos os elementos. Você poderá criar vários grupos horizontais
+        HBox grupoHorizontal1 = new HBox(labelP1X, textIn1);
+        HBox grupoHorizontal2 = new HBox(labelP1Y, textIn2);
+        HBox grupoHorizontal3 = new HBox(labelP2X, textIn3);
+        HBox grupoHorizontal4 = new HBox(labelP2Y, textIn4);
 
 
         //Agora vamos criar a area que mostrará o que foi digitado
-        textField2 = new TextField();
-        textField2.setEditable(false);//vamos deixar false para apenas mostrar texto
-        textField2.setText("Sua frase aparecerá aqui");
+        textOut1 = new TextField();
+        textOut1.setEditable(false);//vamos deixar false para apenas mostrar texto
+        textOut1.setText("Coef Angular: ");
+        textOut2 = new TextField();
+        textOut2.setEditable(false);//vamos deixar false para apenas mostrar texto
+        textOut2.setText("Coef Linear: ");
 
         //Criamos o botão
-        btnTeste = new Button("Executar Ação");
+        btnTeste = new Button("Calcular");
         //Criamos a ação que o botão responderá as ser pressionado
         btnTeste.setOnAction(evento -> {
-            //Aqui dentro é a ação que será executado ao pressionar o botão
-            textField2.setText(textField1.getText());//Acessamos o componente textField1, pegamos o texto e colocaos em textField2
+            Ponto p1 = new Ponto(Double.parseDouble(textIn1.getText()), Double.parseDouble(textIn2.getText()));
+            Ponto p2 = new Ponto(Double.parseDouble(textIn3.getText()), Double.parseDouble(textIn4.getText()));
+            Reta reta = new Reta(p1,p2);
+            textOut1.setText(Double.toString(reta.coefAng()));
+            textOut2.setText(Double.toString(reta.coefLinear()));
         });
+        HBox botao = new HBox(btnTeste);
+        HBox grupoHorizontal5 = new HBox(textOut1, textOut2);
 
-        //VBox é usada para agrupar elementos verticalmente
-        //No construtor passamos todos os elementos que serão agrupados, que podem ser outros grupos
-        VBox layoutFinal = new VBox(grupoHorizontal, textField2,btnTeste);//Aqui vamos agrupar verticalmente o grupo (Label + Texto) o Botao e A area que aparecer o texto digitado
+        VBox layoutFinal = new VBox(grupoHorizontal1,grupoHorizontal2,grupoHorizontal3,grupoHorizontal4,botao,grupoHorizontal5);
         //Criamos a Scene
         Scene scene = new Scene(layoutFinal, 300 , 200);
 
